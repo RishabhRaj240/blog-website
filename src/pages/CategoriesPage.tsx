@@ -12,17 +12,31 @@ const CategoriesPage = () => {
 
   return (
     <MainLayout>
-      <div className="blog-container py-16">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-            <BookOpen className="h-8 w-8 text-blue-600" />
-          </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">Explore Our Content Categories</h1>
-          <p className="text-gray-600 text-lg">
-            Discover curated articles across a variety of topics, all designed to provide you with valuable insights and perspectives.
-          </p>
+      <div className="relative py-20 mb-12 overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/photo-1506744038136-46273834b3fb" 
+            alt="Categories background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 to-black/80"></div>
         </div>
         
+        <div className="blog-container relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600/30 backdrop-blur-sm rounded-full mb-6 border border-blue-400/30">
+              <BookOpen className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6">Explore Our Content Categories</h1>
+            <p className="text-gray-200 text-lg">
+              Discover curated articles across a variety of topics, all designed to provide you with valuable insights and perspectives.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div className="blog-container pb-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category) => (
             <CategoryCard key={category.id} category={category} />

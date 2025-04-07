@@ -42,6 +42,23 @@ const CategoriesPage = () => {
             <CategoryCard key={category.id} category={category} />
           ))}
         </div>
+        
+        {/* Added visual element */}
+        <div className="mt-16 relative overflow-hidden rounded-xl">
+          <img 
+            src="/images/photo-1500673922987-e212871fec22" 
+            alt="Reading inspiration" 
+            className="w-full h-64 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent flex items-center">
+            <div className="p-8">
+              <h3 className="font-serif text-2xl font-bold text-white mb-2">Expand Your Knowledge</h3>
+              <p className="text-white/90 max-w-md">
+                Our curated categories cover everything from tech trends to lifestyle insights. Find your next favorite read.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </MainLayout>
   );

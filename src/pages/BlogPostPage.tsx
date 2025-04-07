@@ -59,6 +59,26 @@ const BlogPostPage = () => {
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
               
+              {/* Added visual elements */}
+              <div className="my-10 p-6 bg-blue-50 rounded-lg border border-blue-100 relative overflow-hidden">
+                <div className="absolute right-0 top-0 bottom-0 w-1/4">
+                  <img 
+                    src="/images/photo-1482938289607-e9573fc25ebb" 
+                    alt="Reading inspiration" 
+                    className="h-full w-full object-cover opacity-25"
+                  />
+                </div>
+                <div className="relative z-10 max-w-[75%]">
+                  <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">Enjoyed this article?</h3>
+                  <p className="text-gray-700 mb-4">Discover more insights by exploring related content or joining our newsletter.</p>
+                  <div className="flex items-center space-x-4">
+                    <Link to="/blog" className="text-blue-600 hover:text-blue-800 font-medium">More articles</Link>
+                    <span className="text-gray-300">|</span>
+                    <Link to="/categories" className="text-blue-600 hover:text-blue-800 font-medium">Browse categories</Link>
+                  </div>
+                </div>
+              </div>
+              
               <div className="border-t border-gray-200 mt-12 pt-8">
                 <h3 className="font-serif text-xl font-bold mb-4">Share this article</h3>
                 <div className="flex space-x-4">

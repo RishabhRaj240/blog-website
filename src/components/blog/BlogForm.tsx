@@ -5,7 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PenTool, Image as ImageIcon, Save } from "lucide-react";
+import { PenTool, Image as ImageIcon, Save, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface BlogFormData {
   title: string;
@@ -20,6 +22,9 @@ interface BlogFormData {
 }
 
 const BlogForm = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<BlogFormData>({
     title: "",
     excerpt: "",
@@ -32,10 +37,83 @@ const BlogForm = () => {
     }
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Blog post submitted:", formData);
-    // Here you would typically save to database
+    setIsSubmitting(true);
+
+    try {
+      // Create blog post object
+      const blogPost = {
+        id: Date.now().toString(),
+        slug: generateSlug(formData.title),
+        title: formData.title,
+        excerpt: formData.excerpt,
+        content: formData.content,
+        category: formData.category,
+        imageUrl: formData.imageUrl || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80",
+        author: {
+          name: formData.author.name,
+          avatarUrl: formData.author.avatarUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80"
+        },
+        date: new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }),
+        readTime: Math.max(1, Math.ceil(formData.content.split(' ').length / 200))
+      };
+
+      // Get existing blogs from localStorage
+      const existingBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+      
+      // Add new blog to the beginning
+      const updatedBlogs = [blogPost, ...existingBlogs];
+      
+      // Save to localStorage
+      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+
+      // Show success toast
+      toast({
+        title: "Blog Published Successfully!",
+        description: "Your blog post has been saved and published.",
+        duration: 3000,
+      });
+
+      // Reset form
+      setFormData({
+        title: "",
+        excerpt: "",
+        content: "",
+        category: "",
+        imageUrl: "",
+        author: {
+          name: "",
+          avatarUrl: ""
+        }
+      });
+
+      // Navigate to blog page after a short delay
+      setTimeout(() => {
+        navigate('/blog');
+      }, 1500);
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save your blog post. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: keyof BlogFormData, value: string) => {
@@ -163,10 +241,20 @@ const BlogForm = () => {
               <Button 
                 type="submit" 
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                disabled={isSubmitting}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Save className="h-5 w-5 mr-2" />
-                Publish Blog Post
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Publishing...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-5 w-5 mr-2" />
+                    Publish Blog Post
+                  </>
+                )}
               </Button>
             </div>
           </form>

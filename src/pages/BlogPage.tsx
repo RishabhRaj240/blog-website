@@ -10,10 +10,15 @@ import { PenTool, Sparkles } from "lucide-react";
 
 const BlogPage = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [allBlogs, setAllBlogs] = useState(blogPosts);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsVisible(true);
+    
+    // Load user blogs from localStorage and combine with default blogs
+    const userBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+    setAllBlogs([...userBlogs, ...blogPosts]);
   }, []);
 
   return (
@@ -56,7 +61,7 @@ const BlogPage = () => {
             {/* Main Content */}
             <div className="lg:w-2/3">
               <div className="space-y-8">
-                {blogPosts.map((post, index) => (
+                {allBlogs.map((post, index) => (
                   <div 
                     key={post.id}
                     className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}

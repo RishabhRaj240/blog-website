@@ -7,19 +7,29 @@ import BlogSidebar from "@/components/blog/BlogSidebar";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blogData";
 import { PenTool, Sparkles } from "lucide-react";
+import type { BlogPost } from "@/data/blogData";
 
 const BlogPage = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [allBlogs, setAllBlogs] = useState(blogPosts);
+  const [userBlogs, setUserBlogs] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsVisible(true);
     
-    // Load user blogs from localStorage and combine with default blogs
-    const userBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
-    setAllBlogs([...userBlogs, ...blogPosts]);
+    // Load user blogs from localStorage
+    const savedUserBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+    setUserBlogs(savedUserBlogs);
   }, []);
+
+  const handleDeleteBlog = (blogId: string) => {
+    const updatedUserBlogs = userBlogs.filter(blog => blog.id !== blogId);
+    setUserBlogs(updatedUserBlogs);
+    localStorage.setItem('userBlogs', JSON.stringify(updatedUserBlogs));
+  };
+
+  // Combine user blogs and default blogs for display
+  const allBlogs = [...userBlogs, ...blogPosts];
 
   return (
     <MainLayout>
@@ -61,15 +71,51 @@ const BlogPage = () => {
             {/* Main Content */}
             <div className="lg:w-2/3">
               <div className="space-y-8">
-                {allBlogs.map((post, index) => (
-                  <div 
-                    key={post.id}
-                    className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                    style={{ transitionDelay: `${index * 150}ms` }}
-                  >
-                    <BlogCard post={post} />
+                {/* User Blogs Section */}
+                {userBlogs.length > 0 && (
+                  <div className="mb-12">
+                    <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center">
+                      <PenTool className="h-6 w-6 mr-2 text-blue-600" />
+                      Your Stories
+                    </h2>
+                    <div className="space-y-8">
+                      {userBlogs.map((post, index) => (
+                        <div 
+                          key={post.id}
+                          className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                          style={{ transitionDelay: `${index * 150}ms` }}
+                        >
+                          <BlogCard 
+                            post={post} 
+                            showDelete={true} 
+                            onDelete={handleDeleteBlog} 
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
+
+                {/* Default Blogs Section */}
+                <div>
+                  {userBlogs.length > 0 && (
+                    <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center">
+                      <Sparkles className="h-6 w-6 mr-2 text-purple-600" />
+                      Featured Stories
+                    </h2>
+                  )}
+                  <div className="space-y-8">
+                    {blogPosts.map((post, index) => (
+                      <div 
+                        key={post.id}
+                        className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                        style={{ transitionDelay: `${(index + userBlogs.length) * 150}ms` }}
+                      >
+                        <BlogCard post={post} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             

@@ -42,30 +42,30 @@ const BlogPage = () => {
     <MainLayout>
       <div className="relative">
         {/* Hero Section with animation */}
-        <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 py-20 mb-12 overflow-hidden">
+        <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 py-12 sm:py-16 lg:py-20 mb-8 lg:mb-12 overflow-hidden">
           <div className="absolute inset-0">
-            <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="absolute top-0 left-1/4 w-32 sm:w-48 lg:w-64 h-32 sm:h-48 lg:h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-0 right-1/4 w-48 sm:w-64 lg:w-96 h-48 sm:h-64 lg:h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
           </div>
           
           <div className="blog-container relative z-10">
             <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full mb-6 border border-white/30">
-                <Sparkles className="h-8 w-8 text-white" />
+              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-full mb-4 sm:mb-6 border border-white/30">
+                <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-white" />
               </div>
-              <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-6">
+              <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 px-4">
                 Discover Amazing Content
               </h1>
-              <p className="text-white/90 text-lg max-w-2xl mx-auto mb-8">
+              <p className="text-white/90 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
                 Explore insightful articles, tutorials, and stories from passionate writers around the world.
               </p>
               <Button 
                 asChild 
                 size="lg"
-                className="bg-white text-blue-600 hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+                className="bg-white text-blue-600 hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-sm sm:text-base"
               >
                 <Link to="/write">
-                  <PenTool className="h-5 w-5 mr-2" />
+                  <PenTool className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                   Write Your Story
                 </Link>
               </Button>
@@ -73,19 +73,19 @@ const BlogPage = () => {
           </div>
         </div>
 
-        <div className="blog-container pb-12">
-          <div className="flex flex-col lg:flex-row gap-12">
+        <div className="blog-container pb-8 sm:pb-12">
+          <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
             {/* Main Content */}
-            <div className="lg:w-2/3">
-              <div className="space-y-8">
+            <div className="xl:w-2/3">
+              <div className="space-y-6 sm:space-y-8">
                 {/* User Blogs Section */}
                 {userBlogs.length > 0 && (
-                  <div className="mb-12">
-                    <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center">
-                      <PenTool className="h-6 w-6 mr-2 text-blue-600" />
+                  <div className="mb-8 sm:mb-12">
+                    <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900 mb-4 sm:mb-6 flex items-center px-4 sm:px-0">
+                      <PenTool className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600" />
                       Your Stories ({userBlogs.length})
                     </h2>
-                    <div className="space-y-8">
+                    <div className="space-y-6 sm:space-y-8">
                       {userBlogs.map((post, index) => (
                         <div 
                           key={post.id}
@@ -106,12 +106,12 @@ const BlogPage = () => {
                 {/* Default Blogs Section */}
                 <div>
                   {userBlogs.length > 0 && (
-                    <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center">
-                      <Sparkles className="h-6 w-6 mr-2 text-purple-600" />
+                    <h2 className="text-xl sm:text-2xl font-serif font-bold text-gray-900 mb-4 sm:mb-6 flex items-center px-4 sm:px-0">
+                      <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-purple-600" />
                       Featured Stories
                     </h2>
                   )}
-                  <div className="space-y-8">
+                  <div className="space-y-6 sm:space-y-8">
                     {blogPosts.map((post, index) => (
                       <div 
                         key={post.id}
@@ -127,7 +127,7 @@ const BlogPage = () => {
             </div>
             
             {/* Sidebar */}
-            <div className={`lg:w-1/3 transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`} style={{ transitionDelay: '500ms' }}>
+            <div className={`xl:w-1/3 transition-all duration-700 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`} style={{ transitionDelay: '500ms' }}>
               <BlogSidebar />
             </div>
           </div>

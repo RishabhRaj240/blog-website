@@ -19,13 +19,20 @@ const BlogPage = () => {
     
     // Load user blogs from localStorage
     const savedUserBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
+    console.log("Loaded user blogs from localStorage:", savedUserBlogs);
     setUserBlogs(savedUserBlogs);
   }, []);
 
   const handleDeleteBlog = (blogId: string) => {
+    console.log("handleDeleteBlog called with id:", blogId);
+    console.log("Current userBlogs:", userBlogs);
+    
     const updatedUserBlogs = userBlogs.filter(blog => blog.id !== blogId);
+    console.log("Updated userBlogs after filter:", updatedUserBlogs);
+    
     setUserBlogs(updatedUserBlogs);
     localStorage.setItem('userBlogs', JSON.stringify(updatedUserBlogs));
+    console.log("Saved to localStorage:", updatedUserBlogs);
   };
 
   // Combine user blogs and default blogs for display
@@ -76,7 +83,7 @@ const BlogPage = () => {
                   <div className="mb-12">
                     <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center">
                       <PenTool className="h-6 w-6 mr-2 text-blue-600" />
-                      Your Stories
+                      Your Stories ({userBlogs.length})
                     </h2>
                     <div className="space-y-8">
                       {userBlogs.map((post, index) => (

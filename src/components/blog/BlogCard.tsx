@@ -27,12 +27,16 @@ const BlogCard = ({ post, featured = false, onDelete, showDelete = false }: Blog
   const { toast } = useToast();
 
   const handleDelete = () => {
+    console.log("Delete button clicked for blog:", post.id);
     if (onDelete) {
+      console.log("Calling onDelete function with id:", post.id);
       onDelete(post.id);
       toast({
         title: "Blog deleted",
         description: "Your blog post has been deleted successfully.",
       });
+    } else {
+      console.log("No onDelete function provided");
     }
   };
 
@@ -52,12 +56,16 @@ const BlogCard = ({ post, featured = false, onDelete, showDelete = false }: Blog
                 variant="destructive"
                 size="sm"
                 className="h-8 w-8 p-0 bg-red-500/80 hover:bg-red-600 backdrop-blur-sm"
-                onClick={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log("Delete trigger clicked");
+                }}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent onClick={(e) => e.stopPropagation()}>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete Blog Post</AlertDialogTitle>
                 <AlertDialogDescription>
@@ -66,7 +74,13 @@ const BlogCard = ({ post, featured = false, onDelete, showDelete = false }: Blog
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
+                <AlertDialogAction 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete();
+                  }} 
+                  className="bg-red-500 hover:bg-red-600"
+                >
                   Delete
                 </AlertDialogAction>
               </AlertDialogFooter>
